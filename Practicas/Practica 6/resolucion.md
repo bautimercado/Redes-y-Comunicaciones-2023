@@ -31,11 +31,43 @@ Investigue en qué lugar en Linux y en Windows está descripta la asociación ut
 
 ## 4. Suponiendo Selective Repeat; tamaño de ventana 4 y sabiendo que E indica que el mensaje llegó con errores. Indique en el siguiente gráfico, la numeración de los ACK que el host B envía al Host A.
 
+![](img/clipboard01.png)
+
+- ACK = 0
+- ACK = 1
+- ACK = 3
+- ACK = 4
+- ACK = 5
+- ACK = 2
+
 ## 5. ¿Qué restricción existe sobre el tamaño de ventanas en el protocolo Selective Repeat?
+
+- El tamaño de la ventana debe ser menos que (M-1)/2
+  - Siendo M la enumeración de los segmentos de una ráfaga.
 
 ## 6. De acuerdo a la captura TCP de la siguiente figura, indique los valores de los campos borroneados.
 
+![](img/clipboard02.png)
+
+1. 172.20.1.1 - 172.20.1.100 [__SYN__] Seq=__3933822138__, ...
+2. 172.20.1.100 - 172.20.1.1 [__SYN, ACK__] Seq=1047471501, Ack=3933822138
+3. __172.20.1.1__ - __172.10.1.100__ [__ACK__] Seq=__3933822138__, Ack=__1047471501__
+
 ## 7. Dada la sesión TCP de la figura, completar los valores marcados con un signo de interrogación.
 
+![](img/clipboard3.png)
+
+- Seq=1, Ack=1
+- Seq=1, Ack=8
+- Seq=1, Ack=17
+- Seq=1, Ack=22
+- Seq=22, Ack=1
+- Ack=1, Seq=23
+- Seq=23, Ack=2 
 
 ## 8. ¿Qué es el RTT y cómo se calcula? Investigue la opción TCP timestamp y los campos TSval y TSecr.
+
+- El RTT (Round-Trip Time) es el tiempo de un segmento en ir y volver. Se calcula restando el tiempo de recepción al emisor y el tiempo en el que se envió.
+- La opción TCP timestamp es un mecanismo que nos permite medir y sincronizar el tiempo entre los extremos. Es un campo del header TCP que tiene una marca de tiempo escrita por el emisor, después también la escribe el receptor y en función de eso se puede obtener el RTT
+  - __TSVal (TimeStamp Value):__ Valor de la marca de tiempo generada por el emisor.
+  - __TSecr (TimeStamp Echo Reply):__ Valor de la marca de tiempo que recibe el emisor. Es retornada al emisor. 
