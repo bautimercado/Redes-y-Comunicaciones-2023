@@ -70,4 +70,94 @@ Investigue en qué lugar en Linux y en Windows está descripta la asociación ut
 - El RTT (Round-Trip Time) es el tiempo de un segmento en ir y volver. Se calcula restando el tiempo de recepción al emisor y el tiempo en el que se envió.
 - La opción TCP timestamp es un mecanismo que nos permite medir y sincronizar el tiempo entre los extremos. Es un campo del header TCP que tiene una marca de tiempo escrita por el emisor, después también la escribe el receptor y en función de eso se puede obtener el RTT
   - __TSVal (TimeStamp Value):__ Valor de la marca de tiempo generada por el emisor.
-  - __TSecr (TimeStamp Echo Reply):__ Valor de la marca de tiempo que recibe el emisor. Es retornada al emisor. 
+  - __TSecr (TimeStamp Echo Reply):__ Valor de la marca de tiempo que recibe el emisor. Es retornada al emisor.
+
+## 9. Para la captura dada, responder las siguientes preguntas.
+
+### a. ¿Cuántos intentos de conexiones TCP hay?
+
+- En total, hay 5 intentos de conexión (3 de ellos exitosos).
+
+### b. ¿Cuáles son la fuente y el destino (IP:port) para c/u?
+
+- 10.0.2.10:46907 -> 10.0.4.10:5001
+- 10.0.2.10:45670 -> 10.0.4.10:7002
+- 10.0.2.10:45671 -> 10.0.4.10:7002
+- 10.0.2.10:46910 -> 10.0.4.10:5001
+- 10.0.2.10:54424 -> 10.0.4.10:9000
+
+### c. ¿Cuántas conexiones TCP exitosas hay en la captura? ¿Cómo diferencia las exitosas de las que no lo son? ¿Cuáles flags encuentra en cada una?
+
+- Hay 3 conexiones exitosas en la captura. Se pueden diferenciar ya que se puede ver la secuencia de mensajes del 3WH (SYN, SYN+ACK, ACK).
+
+### d. Dada la primera conexión exitosa responder:
+
+#### i. ¿Quién inicia la conexión?
+
+- 10.0.2.10:46907 (el que envía el SYN).
+
+#### ii. ¿Quién es el servidor y quién el cliente?
+
+- El servidor es 10.0.4.10:5001 y el cliente 10.0.2.10:46907
+
+#### iii. ¿En qué segmentos se ve el 3-way handshake?
+
+- En los 3 primeros.
+
+#### iv. ¿Cuáles ISNs se intercambian?
+
+- El cliente usará el ISN 221848254
+- El servidor usará el ISN 1292618479
+
+#### v. ¿Cuál MSS se negoció?
+
+- El MSS que se negoció es de 1460 bytes.
+
+#### vi. ¿Cuál de los dos hosts envia la mayor cantidad de datos (IP:port)?
+
+- El que envía la mayor cantidad de datos es el 10.0.2.10:46907
+  - Para verificar esto, se puede ir hasta el final de la conexión y ver los #SEQ y #ACK de cada uno (para 10.0.2.10:46907 tiene #ACK=2 y #SEQ=786458)
+
+### e. Identificar primer segmento de datos (origen, destino, tiempo, número de fila y número de secuencia TCP).
+
+- Origen => 10.0.2.10:46907
+- Destino => 10.0.4.10:5001
+- Tiempo => 20 ms
+- Número de fila => 6
+- Número de secuencia TCP => 1
+
+#### i. ¿Cuántos datos lleva?
+
+- Tiene un payload de 24 bytes.
+
+#### ii. ¿Cuándo es confirmado (tiempo, número de fila y número de secuencia TCP)?
+
+- Tiempo => 18ms
+- Número de fila => 7
+- Número de secuencia TCP => 1
+
+#### iii. La confirmación, ¿qué cantidad de bytes confirma?
+
+- Confirma los 25 bytes que se recibieron (espera a partir del byte 26).
+
+### f. ¿Quién inicia el cierre de la conexión? ¿Qué flags se utilizan? ¿En cuáles segmentos se ve (tiempo, número de fila y número de secuencia TCP)?
+
+- El que inicia el cierre de la conexión es 10.0.2.10:46907
+- Utiliza los flags FYN, ACK y PSH (el PSH no es necesario para el 4/3WH-Close, pero lo usa para indicar que la aplicación debe leer lo que se envía).
+- 1er segmento: 19ms, 958, SEQ=786289
+- 2do segmento: 1697ms, 959, SEQ=1
+- 3er segmento: 20ms, 960, SEQ=786458
+
+## 10. Responda las siguientes preguntas respecto del mecanismo de control de flujo.
+
+### a. ¿Quién lo activa? ¿De qué forma lo hace?
+
+- Lo activa el proceso receptor (Receiver). En función del estado del buffer de recepción, achica o agranda la ventana cuando le envía el segmento al otro extremo (en el campo Window Size).
+
+### b. ¿Qué problema resuelve?
+
+- No satura al proceso receptor (además ayuda a no congestionar a la red).
+
+### c. ¿Cuánto tiempo dura activo y qué situación lo desactiva?
+
+- Se mantiene activo hasta que la aplicación lee los datos que haya en el buffer de recepción. Cuando eso sucede, se libera espacio y el receiver actualiza el tamaño de la ventana.
