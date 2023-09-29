@@ -193,11 +193,11 @@
 
 ### b. ¿Cuántos puertos hay abiertos a la espera de posibles nuevas conexiones?
 
-- 5
+- 4
 
 ### c. El cliente y el servidor de las comunicaciones HTTPS (puerto 443), ¿residen en la misma máquina?
 
-- No. Ya que la dirección IP origen y diferente a la dirección IP destino.
+- No. Ya que la dirección IP origen es diferente a la dirección IP destino.
 
 ### d. El cliente y el servidor de la comunicación SSH (puerto 22), ¿residen en la misma máquina?
 
@@ -205,7 +205,7 @@
 
 ### e. Liste los nombres de todos los procesos asociados con cada comunicación. Indique para cada uno si se trata de un proceso cliente o uno servidor.
 
-//CONSULTAR
+Tener en cuenta que los procesos que están en estado __LISTEN__ y usan puertos entre 0 y 1023 son procesos de tipo servidor.
 
 - SSHD -> Servidor
 - Apache2 -> Servidor
@@ -218,12 +218,12 @@
 
 //CONSULTAR
 
-- El cierre de la conexión  163.10.5.222:41654 200.115.89.30:443 fue iniciado por el servidor.
-- El cierre de la conexión 163.10.5.222:36676 54.149.207.17:443 fue iniciado por el cliente.
+- El cierre de la conexión  163.10.5.222:41654 200.115.89.30:443 fue iniciado por el remoto __(CLOSE-WAIT)__
+- El cierre de la conexión 163.10.5.222:36676 54.149.207.17:443 fue iniciado por el local __(TIME-WAIT)__
 
 ### g. ¿Cuántas conexiones están aún pendientes por establecerse?
 
-- Una sola.
+- Una sola __(SYN-SENT)__
 
 ## 15. Dadas las salidas de los siguientes comandos ejecutados en el cliente y el servidor, responder:
 
