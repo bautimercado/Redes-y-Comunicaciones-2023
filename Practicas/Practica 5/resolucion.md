@@ -216,8 +216,6 @@ Tener en cuenta que los procesos que están en estado __LISTEN__ y usan puertos 
 
 ### f. ¿Cuáles conexiones tuvieron el cierre iniciado por el host local y cuáles por el remoto?
 
-//CONSULTAR
-
 - El cierre de la conexión  163.10.5.222:41654 200.115.89.30:443 fue iniciado por el remoto __(CLOSE-WAIT)__
 - El cierre de la conexión 163.10.5.222:36676 54.149.207.17:443 fue iniciado por el local __(TIME-WAIT)__
 
