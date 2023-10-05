@@ -51,8 +51,8 @@ Investigue en qué lugar en Linux y en Windows está descripta la asociación ut
 
 1. 172.20.1.1 - 172.20.1.100 [__SYN__] Seq=__3933822137__, ...
   - El Seq es igual al ACK del receptor pero con -1.
-3. 172.20.1.100 - 172.20.1.1 [__SYN, ACK__] Seq=1047471501, Ack=3933822138
-4. __172.20.1.1__ - __172.10.1.100__, 41749 - vce, [__ACK__] Seq=__3933822138__, Ack=__1047471502__
+2. 172.20.1.100 - 172.20.1.1 [__SYN, ACK__] Seq=1047471501, Ack=3933822138
+3. __172.20.1.1__ - __172.10.1.100__, 41749 - vce, [__ACK__] Seq=__3933822138__, Ack=__1047471502__
 
 ## 7. Dada la sesión TCP de la figura, completar los valores marcados con un signo de interrogación.
 
@@ -77,7 +77,7 @@ Investigue en qué lugar en Linux y en Windows está descripta la asociación ut
 
 ### a. ¿Cuántos intentos de conexiones TCP hay?
 
-- En total, hay 5 intentos de conexión (3 de ellos exitosos).
+- En total, hay 6 intentos de conexión.
 
 ### b. ¿Cuáles son la fuente y el destino (IP:port) para c/u?
 
@@ -86,10 +86,11 @@ Investigue en qué lugar en Linux y en Windows está descripta la asociación ut
 - 10.0.2.10:45671 -> 10.0.4.10:7002
 - 10.0.2.10:46910 -> 10.0.4.10:5001
 - 10.0.2.10:54424 -> 10.0.4.10:9000
+- 10.0.2.10:54425 -> 10.0.4.10:9000
 
 ### c. ¿Cuántas conexiones TCP exitosas hay en la captura? ¿Cómo diferencia las exitosas de las que no lo son? ¿Cuáles flags encuentra en cada una?
 
-- Hay 3 conexiones exitosas en la captura. Se pueden diferenciar ya que se puede ver la secuencia de mensajes del 3WH (SYN, SYN+ACK, ACK).
+- Hay 4 conexiones exitosas en la captura. Se pueden diferenciar ya que se puede ver la secuencia de mensajes del 3WH (SYN, SYN+ACK, ACK).
 
 ### d. Dada la primera conexión exitosa responder:
 
@@ -129,7 +130,7 @@ Investigue en qué lugar en Linux y en Windows está descripta la asociación ut
 
 #### i. ¿Cuántos datos lleva?
 
-- Tiene un payload de 24 bytes.
+- 24 bytes.
 
 #### ii. ¿Cuándo es confirmado (tiempo, número de fila y número de secuencia TCP)?
 
@@ -139,7 +140,7 @@ Investigue en qué lugar en Linux y en Windows está descripta la asociación ut
 
 #### iii. La confirmación, ¿qué cantidad de bytes confirma?
 
-- Confirma los 25 bytes que se recibieron (espera a partir del byte 26).
+- Confirma los 24 bytes que se recibieron enviando un ACK de 25 (indicando que espera a partir del byte 25).
 
 ### f. ¿Quién inicia el cierre de la conexión? ¿Qué flags se utilizan? ¿En cuáles segmentos se ve (tiempo, número de fila y número de secuencia TCP)?
 
@@ -197,6 +198,7 @@ Investigue en qué lugar en Linux y en Windows está descripta la asociación ut
 ### f. Con respecto a los puertos vistos en las capturas, ¿observa algo particular que lo diferencie de TCP?
 
 - Cuando ambos extremos se envían mensajes, solo se invierten los valores de src_ip:src_port y dst_ip:dst_port
+- Ademas, el puerto origen puede ser 0 si es que no se necesita una respuesta.
 
 ### g. Dada la primera comunicación en la cual se ven datos en ambos sentidos (identificar el primer datagrama):
 
@@ -211,7 +213,7 @@ Investigue en qué lugar en Linux y en Windows está descripta la asociación ut
 
 ### h. ¿Se puede calcular un RTT?
 
-- Wireshark nos brinda una columna _TIME_ la cuál tiene el tiempo en el que se manda un datagrama. Podríamos restar el tiempo en el que se envía un datagrama y el tiempo en el que se obtiene una respuesta.
+- UDP es un protocolo no orientado a conexión y stateless, esto significa que no hay ACKs (recordar que los ACKs me permiten hacer el cálculo del RTT). Aunque es posible mediante servicios externos.
 
 ## 13. Desarrolle un cliente y un servidor, donde el cliente envíe un mensaje al servidor y este último imprima en pantalla el contenido del mismo.
 
@@ -270,6 +272,7 @@ client.close
 ## 14. Compare ambas implementaciones. ¿Qué diferencia nota entre la implementación de cada una? ¿Cuál le parece más simple?
 
 - UDP es muchisimo más sencillo, ya que este no necesita establecer una conexión entre ambos, directamente se envían los datagramas.
+- 
 ## 15. Dada la salida que se muestra en la imagen, responda los ítems debajo.
 
 ![](img/clipboard04.png)
@@ -277,17 +280,21 @@ client.close
 ### Suponga que ejecuta los siguientes comandos desde un host con la IP 10.100.25.90. Responda qué devuelve la ejecución de los siguientes comandos y, en caso que corresponda, especifique los flags.
 
 - hping3 -p 3306 –udp 10.100.25.135
-  - ICMP - Port Unreacheable  
+  - ICMP - Port Unreacheable
+  
 - hping3 -S -p 25 10.100.25.135
-  - La respuesta es un segmento TCP del servidor con los flags SYN+ACK
+  - La respuesta es un segmento TCP del servidor con los flags SYN+ACK  //Consultar
+
 - hping3 -S -p 22 10.100.25.135
   - La respuesta es un segmento TCP del servidor con los flags SYN+ACK
+
 - hping3 -S -p 110 10.100.25.135
   - La respuesta es un segmento TCP del servidor con los flags RST+ACK
 
 ### ¿Cuántas conexiones distintas hay establecidas? Justifique.
 
 - //Consulta: La conexión TIME-WAIT cuenta?
+  - Respuesta: No, solo cuentan las conexiones cuyo estado es __ESTAB__
 - En total, hay 3 conexiones establecidas.
   - Si bien, podemos ver más de 3 renglones con el estado __ESTAB__, varias de ellas son repetidas pero con los hosts invertidos. Esto se da porque el proceso cliente y el proceso servidor están en el mismo host
   - Por ejemplo, tenemos la conexión entre 127.0.0.1:3306 y 127.0.0.1:34338. Dicha conexión aparece dos veces (127.0.0.1:3306, 127.0.0.1:34338 y 127.0.0.1:34338 y 127.0.0.1:3306)
