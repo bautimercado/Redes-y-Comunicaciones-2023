@@ -216,101 +216,59 @@ Investigue en qué lugar en Linux y en Windows está descripta la asociación ut
 
 ### a. Utilizando UDP.
 
+Servidor UDP:
+
 ```ruby
 require 'socket'
 
-class UDPServer
-  def initialize(port)
-    @port = port
-    @server = UDPSocket.new
-    @server.bind('0.0.0.0', @port)
-  end
+server = UDPSocket.new
+server.bind(nil, 1234)
+loop {
+    text, sender = server.recvfrom(16)
+    puts text
+}
+```
 
-  def start
-    loop do
-      data, sender = @server.recvfrom(1024)
-      sender_ip = sender[3]
-      sender_port = sender[1]
-      puts "Mensaje recibido de #{sender_ip}:#{sender_port}: #{data}"
-    end
-  end
+Cliente UDP:
 
-  def close
-    @server.close
-  end
-end
-
-class UDPClient
-  def initialize(server_ip, server_port)
-    @server_ip = server_ip
-    @server_port = server_port
-    @client = UDPSocket.new
-  end
-
-  def send_msg(msg)
-    @client.send(msg, 0, @server_ip, @server_port)
-  end
-
-  def close
-    @client.close
-  end
-end
-
-server = UDPServer.new(12345)
-client = UDPClient.new('127.0.0.1', 12345)
-server.start
-client.send_message("Hola, servidor UDP")
-client.close
+```ruby
+require 'socket'
+s = UDPSocket.new
+s.send("hello", 0, 'localhost', 1234)
 ```
 
 ### b. Utilizando TCP.
 
+Servidor TCP:
+
 ```ruby
 require 'socket'
 
-class TCPServerApp
-  def initialize(port)
-    @port = port
-    @server = TCPServer.new('0.0.0.0', @port)
-  end
-
-  def start
-    loop do
-      client = @server.accept
-      handle_client(client)
-    end
-  end
-
-  def handle_client(client)
-    message = client.gets.chomp
-    puts "Mensaje recibido del cliente: #{message}"
+server = TCPServer.open(1234)
+loop {
+    client = server.accept
+    puts client.gets
     client.close
-  end
-end
+}
+```
 
-class TCPClient
-  def initialize(server_ip, server_port)
-    @server_ip = server_ip
-    @server_port = server_port
-  end
+Cliente TCP:
 
-  def send_message(message)
-    client = TCPSocket.new(@server_ip, @server_port)
-    client.puts(message)
-    client.close
-  end
-end
+```ruby
+require 'socket'
 
-server_app = TCPServerApp.new(12345)
-server_app.start
-client = TCPClient.new('127.0.0.1', 12345)
-client.send_message("Hola, servidor TCP")
+hostname = 'localhost'
+port = 1234
+
+client = TCPSocket.open(hostname, port)
+
+client.puts "hola"
+client.close 
 ```
 
 ## 14. Compare ambas implementaciones. ¿Qué diferencia nota entre la implementación de cada una? ¿Cuál le parece más simple?
 
-//Ver resumen
-
+- UDP es muchisimo más sencillo, ya que este no necesita establecer una conexión entre ambos, directamente se envían los datagramas.
 ## 15. Dada la salida que se muestra en la imagen, responda los ítems debajo.
 
 ![](img/clipboard04.png)
