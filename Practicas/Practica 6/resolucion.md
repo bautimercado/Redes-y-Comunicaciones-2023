@@ -161,3 +161,181 @@ Investigue en qué lugar en Linux y en Windows está descripta la asociación ut
 ### c. ¿Cuánto tiempo dura activo y qué situación lo desactiva?
 
 - Se mantiene activo hasta que la aplicación lee los datos que haya en el buffer de recepción. Cuando eso sucede, se libera espacio y el receiver actualiza el tamaño de la ventana.
+
+## 12. Para la captura dada, responder las siguientes preguntas.
+
+### a. ¿Cuántas comunicaciones (srcIP,srcPort,dstIP,dstPort) UDP hay en la captura?
+
+- 10.0.2.10:0, 10.0.30.10:8003
+- 10.0.2.10:9000, 10.0.3.10:13
+- 10.0.2.10:9004, 10.0.3.10:4555
+- 10.0.2.10:9004, 10.0.3.10:9045
+- 10.0.3.10:9045, 10.0.2.10:9004
+- 10.0.2.10:9004, 1.1.1.1:9045
+- 10.0.2.10:53300, 10.0.4.10:9045
+- 10.0.2.10:59053, 10.0.4.10:8003
+- 10.0.4.10:8003, 10.0.2.10:59053
+- 10.0.2.10:8003, 10.0.4.10:8003
+
+### b. ¿Cómo se podrían identificar las exitosas de las que no lo son?
+
+- UDP no provee ningún clase de feedback acerca de si las conexiones son exitosas o no. Dentro de los protocolos de red hay llamado ICMP que nos brinda información sobre el estado de las conexiones, gracias a este podemos ver cuáles de ellas fallaron.
+
+### c. ¿UDP sigue el modelo cliente/servidor?
+
+- No necesariamente, ya que no se establece una conexión entre los dos extremos. Sin embargo podría funcionar como cliente/servidor, esto se haría invirtiendo los valores de src_ip:src_port y dst_ip:dst_port
+
+### d. ¿Qué servicios o aplicaciones suelen utilizar este protocolo?
+
+- Las aplicaciones o servicios que usan este protocolo son aquellas en las que la pérdida de paquetes no es critica y la latencia es más importante, por ejemplo DNS.
+
+### e. ¿Qué hace el protocolo UDP en relación al control de errores?
+
+- UDP no realiza un control de errores exhaustivo como TCP. UDP solo tiene un campo de checksum para verificar si el datagrama está corrupto.
+
+### f. Con respecto a los puertos vistos en las capturas, ¿observa algo particular que lo diferencie de TCP?
+
+- Cuando ambos extremos se envían mensajes, solo se invierten los valores de src_ip:src_port y dst_ip:dst_port
+
+### g. Dada la primera comunicación en la cual se ven datos en ambos sentidos (identificar el primer datagrama):
+
+#### i. ¿Quién envía el primer datagrama (srcIP,srcPort)?
+
+- 10.0.2.10:9004
+
+#### ii. ¿Cuantos datos se envían en un sentido y en el otro?
+
+- De 10.0.2.10:9004 a 10.0.3.10:9045 se envían dos datagramas (Len=4, Len=5)
+- De 10.0.3.10:9045 a 10.0.2.10:9004 se envían dos datagramas también (Len=7, Len=5)
+
+### h. ¿Se puede calcular un RTT?
+
+- Wireshark nos brinda una columna _TIME_ la cuál tiene el tiempo en el que se manda un datagrama. Podríamos restar el tiempo en el que se envía un datagrama y el tiempo en el que se obtiene una respuesta.
+
+## 13. Desarrolle un cliente y un servidor, donde el cliente envíe un mensaje al servidor y este último imprima en pantalla el contenido del mismo.
+
+### a. Utilizando UDP.
+
+```ruby
+require 'socket'
+
+class UDPServer
+  def initialize(port)
+    @port = port
+    @server = UDPSocket.new
+    @server.bind('0.0.0.0', @port)
+  end
+
+  def start
+    loop do
+      data, sender = @server.recvfrom(1024)
+      sender_ip = sender[3]
+      sender_port = sender[1]
+      puts "Mensaje recibido de #{sender_ip}:#{sender_port}: #{data}"
+    end
+  end
+
+  def close
+    @server.close
+  end
+end
+
+class UDPClient
+  def initialize(server_ip, server_port)
+    @server_ip = server_ip
+    @server_port = server_port
+    @client = UDPSocket.new
+  end
+
+  def send_msg(msg)
+    @client.send(msg, 0, @server_ip, @server_port)
+  end
+
+  def close
+    @client.close
+  end
+end
+
+server = UDPServer.new(12345)
+client = UDPClient.new('127.0.0.1', 12345)
+server.start
+client.send_message("Hola, servidor UDP")
+client.close
+```
+
+### b. Utilizando TCP.
+
+```ruby
+require 'socket'
+
+class TCPServerApp
+  def initialize(port)
+    @port = port
+    @server = TCPServer.new('0.0.0.0', @port)
+  end
+
+  def start
+    loop do
+      client = @server.accept
+      handle_client(client)
+    end
+  end
+
+  def handle_client(client)
+    message = client.gets.chomp
+    puts "Mensaje recibido del cliente: #{message}"
+    client.close
+  end
+end
+
+class TCPClient
+  def initialize(server_ip, server_port)
+    @server_ip = server_ip
+    @server_port = server_port
+  end
+
+  def send_message(message)
+    client = TCPSocket.new(@server_ip, @server_port)
+    client.puts(message)
+    client.close
+  end
+end
+
+server_app = TCPServerApp.new(12345)
+server_app.start
+client = TCPClient.new('127.0.0.1', 12345)
+client.send_message("Hola, servidor TCP")
+```
+
+## 14. Compare ambas implementaciones. ¿Qué diferencia nota entre la implementación de cada una? ¿Cuál le parece más simple?
+
+//Ver resumen
+
+## 15. Dada la salida que se muestra en la imagen, responda los ítems debajo.
+
+![](img/clipboard04.png)
+
+### Suponga que ejecuta los siguientes comandos desde un host con la IP 10.100.25.90. Responda qué devuelve la ejecución de los siguientes comandos y, en caso que corresponda, especifique los flags.
+
+- hping3 -p 3306 –udp 10.100.25.135
+  - ICMP - Port Unreacheable  
+- hping3 -S -p 25 10.100.25.135
+  - La respuesta es un segmento TCP del servidor con los flags SYN+ACK
+- hping3 -S -p 22 10.100.25.135
+  - La respuesta es un segmento TCP del servidor con los flags SYN+ACK
+- hping3 -S -p 110 10.100.25.135
+  - La respuesta es un segmento TCP del servidor con los flags RST+ACK
+
+### ¿Cuántas conexiones distintas hay establecidas? Justifique.
+
+- //Consulta: La conexión TIME-WAIT cuenta?
+- En total, hay 3 conexiones establecidas.
+  - Si bien, podemos ver más de 3 renglones con el estado __ESTAB__, varias de ellas son repetidas pero con los hosts invertidos. Esto se da porque el proceso cliente y el proceso servidor están en el mismo host
+  - Por ejemplo, tenemos la conexión entre 127.0.0.1:3306 y 127.0.0.1:34338. Dicha conexión aparece dos veces (127.0.0.1:3306, 127.0.0.1:34338 y 127.0.0.1:34338 y 127.0.0.1:3306)
+  - En el caso de 10.100.25.135:22 y 200.100.120.210:61576 no aparece dos veces ya que 200.100.120.210:61576 es otro host.
+
+## 16. Complete en la columna Orden, el orden de aparición de los paquetes representados en cada fila.
+
+//Lo dejo de repaso para el parcial =)
+
+![](img/clipboard05.png)
