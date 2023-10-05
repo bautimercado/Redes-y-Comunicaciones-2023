@@ -49,9 +49,10 @@ Investigue en qué lugar en Linux y en Windows está descripta la asociación ut
 
 ![](img/clipboard02.png)
 
-1. 172.20.1.1 - 172.20.1.100 [__SYN__] Seq=__3933822138__, ...
-2. 172.20.1.100 - 172.20.1.1 [__SYN, ACK__] Seq=1047471501, Ack=3933822138
-3. __172.20.1.1__ - __172.10.1.100__ [__ACK__] Seq=__3933822138__, Ack=__1047471501__
+1. 172.20.1.1 - 172.20.1.100 [__SYN__] Seq=__3933822137__, ...
+  - El Seq es igual al ACK del receptor pero con -1.
+3. 172.20.1.100 - 172.20.1.1 [__SYN, ACK__] Seq=1047471501, Ack=3933822138
+4. __172.20.1.1__ - __172.10.1.100__, 41749 - vce, [__ACK__] Seq=__3933822138__, Ack=__1047471502__
 
 ## 7. Dada la sesión TCP de la figura, completar los valores marcados con un signo de interrogación.
 
