@@ -283,7 +283,7 @@ client.close
   - ICMP - Port Unreacheable
   
 - hping3 -S -p 25 10.100.25.135
-  - La respuesta es un segmento TCP del servidor con los flags SYN+ACK  //Consultar
+  - La respuesta es un segmento TCP del servidor con los flags RST+ACK
 
 - hping3 -S -p 22 10.100.25.135
   - La respuesta es un segmento TCP del servidor con los flags SYN+ACK
