@@ -472,3 +472,30 @@ Resumen:
 ## 18. Asigne direcciones IP en los equipos de la topología según el plan anterior.
 
 ![ejercicio-18-resolucion](img/clipboard5.png)
+
+# ICMP y Configuración IP
+
+## 19. Describa qué es y para qué sirve el protocolo ICMP.
+
+### a. Analice cómo funciona el comando ping.
+
+#### i. Indique el tipo y código ICMP que usa el ping.
+
+#### ii. Indique el tipo y código ICMP que usa la respuesta de un ping.
+
+### b. Analice cómo funcionan comandos como traceroute/tracert de Linux/Windows y cómo manipulan el campo TTL de los paquetes IP.
+
+### c. Indique la cantidad de saltos realizados desde su computadora hasta el sitio www.nasa.gov. Analice:
+
+#### i. Cómo hacer para que no muestre el nombre del dominio asociado a la IP de cada salta.
+
+#### ii. La razón de la aparición de * en parte o toda la respuesta de un salto.
+
+### d. Verifique el recorrido hacia los servidores de nombre del dominio unlp.edu.ar. En base al recorrido realizado, ¿podría confirmar cuál de ellos toma un camino distinto?
+
+## 20. ¿Para que se usa el bloque 127.0.0.0/8? ¿Qué PC responde a los siguientes comandos?
+
+## 21. Investigue para qué sirven los comandos ifconfig y route. ¿Qué comandos podría utilizar en su reemplazo? Inicie una topología con CORE, cree una máquina y utilice en ella los comandos anteriores para practicar sus diferentes opciones, mínimamente:
+
+- Configurar y quitar una dirección IP en una interfaz.
+- Ver la tabla de ruteo de la máquina.
