@@ -184,7 +184,7 @@
 
 - 195.200.45.0
   - Dir. Broadcast => 195.200.45.15
-  - Rango de direcciones => 195.200.45.1 - 195.200.45.15
+  - Rango de direcciones => 195.200.45.1 - 195.200.45.14
 
 ## 9. Dado el siguiente gráfico:
 
