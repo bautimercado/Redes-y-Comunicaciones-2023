@@ -95,8 +95,6 @@
 
 ### e. ¿Cuál es el rango de direcciones IP válidas dentro de la subred?
 
-// A qué se refiere con válidas??
-
 - 172.16.58.192/26
   - 172.16.58.193 - 172.16.58.254
 - 163.10.5.32/27
@@ -123,7 +121,7 @@
 
 ### a. ¿Es una dirección de red o de host?
 
-- Es una dirección de host.
+- Es una dirección de host. Puesto que los bits de hosts no están todos en 0.
 
 ### b. Clase a la que pertenece y máscara de clase.
 
@@ -139,7 +137,7 @@
 #### i. Máscara necesaria.
 
 - Para crear 513 subredes necesitamos 10 bits, ya que 2¹⁰ = 1024 subredes (teniendo un desperdicio de 511 subredes).
-- La máscara sería /26 (255.255.192.0).
+- La máscara sería /26 (255.255.255.192).
 
 #### ii. Cantidad de redes asignables.
 
@@ -151,8 +149,7 @@
 
 #### iv. Dirección de la subred 710.
 
-// Siempre que se calcule una dirección IP de una subred específica, se le resta 1 ya que la 1er subred válida es la 0
-
+- Siempre que se calcule una dirección IP de una subred específica, se le resta 1 ya que la 1er subred válida es la 0
 - La dirección de red que nos queda es 128.50.10.0/26.
 - 709 en binario => 10110001 01
 - 128.50.10.0 => 10000000 00110010 00001010 00000000
@@ -160,7 +157,7 @@
 
 #### v. Dirección de broadcast de la subred 710.
 
-- La dirección de broadcast de la subred N° 710 es: 128.50.177.127/26
+- La dirección de broadcast de la subred N° 710 es: 128.50.177.127
 
 ## 8. Si usted estuviese a cargo de la administración del bloque IP 195.200.45.0/24
 
@@ -244,18 +241,12 @@ La asignación de direcciones IP no es correcta.
 
 ### b. 195.24.0.0/13
 
-- 195.24.0.0/16
-- 195.25.0.0/16
-- 195.26.0.0/16
-- 195.27.0.0/16
-- 195.28.0.0/16
-- 195.29.0.0/16
-- 195.30.0.0/16
-- 195.31.0.0/16
+- La máscara de las redes es /24 porque son de Clase C.
+- 195.24.0.0/24 ... 195.31.255.0/24
 
 ### c. 195.24/13
 
-// Sería lo mismo que el inciso b?
+- Sería lo mismo que el inciso 12b.
 
 ## 13. El bloque CIDR 128.0.0.0/2 o 128/2, ¿Equivale a listar todas las direcciones de red de clase B? ¿Cuál sería el bloque CIDR que agrupa todas las redes de clase A?
 
@@ -291,60 +282,61 @@ La asignación de direcciones IP no es correcta.
 Tenemos la red C que necesita 1530 hosts, para eso necesitamos 11 bits (2046 hosts).
 
 - Dirección IP -> 205.10.192.0 = 11001101 00001010 11000000 00000000
-- Mask -> 11111111 11111111 111|111|00 00000000 -> /22
+- Mask -> 11111111 11111111 111|11|000 00000000 -> /21
 - Se usaron 11 bits para hosts y quedaron 3 bits para subred. Vamos a asignar el 1er segmento de 2046 hosts para la red B.
-- Dirección IP de Red C -> 205.10.192.0/22
+- Dirección IP de Red C -> 205.10.192.0/21
 - Bloque de direcciones libres:
-  - 205.10.196.0/22
-  - 205.10.200.0/22
-  - 205.10.204.0/22
-  - 205.10.208.0/22
-  - 205.10.212.0/22
-  - 205.10.216.0/22
-  - 205.10.220.0/22
+  - 205.10.200.0/21
+  - 205.10.208.0/21
+  - 205.10.216.0/21
 
-Tenemos la red A que necesita 128 hosts. Para esto necesitamos 8 bits (254 hosts). Usamos el bloque 205.10.196.0/22
+Tenemos la red A que necesita 128 hosts. Para esto necesitamos 8 bits (254 hosts). Usamos el bloque 205.10.200.0/21
 
-- Dirección IP -> 205.10.196.0 = 11001101 00001010 11000100 00000000
+- Dirección IP -> 205.10.200.0 = 11001101 00001010 11001000 00000000
 - Mask -> 11111111 11111111 111111|11 00000000 = /24
 - Se usaron 8 bits para host y quedaron 2 bits para subred. Vamos a asignar el 1er segmento de 254 hosts para la red A.
-- Dirección IP de Red A -> 205.10.196.0/24
+- Dirección IP de Red A -> 205.10.200.0/24
 - Bloque de direcciones disponibles:
-  - 205.10.197.0/24
-  - 205.10.198.0/24
-  - 205.10.199.0/24
+  - 205.10.201.0/24
+  - 205.10.202.0/24
+  - 205.10.203.0/24
+  - 205.10.204.0/24
+  - 205.10.205.0/24
+  - 205.10.206.0/24
+  - 205.10.207.0/24
 
-Tenemos la red B que necesita 20 hosts. Para esto necesitamos 5 bits (30 hosts). Usamos el bloque 205.10.197.0/24
-- Dirección IP -> 205.10.197.0 = 11001101 00001010 11000101 00000000
+Tenemos la red B que necesita 20 hosts. Para esto necesitamos 5 bits (30 hosts). Usamos el bloque 205.10.201.0/24
+- Dirección IP -> 205.10.201.0 = 11001101 00001010 11001001 00000000
 - Mask -> 11111111 11111111 11111111 111|00000 = /27
 - Se usaron 5 bits para host y quedaron 3 bits para subred. Vamos a asignar el 1er segmento de 30 hosts para la red B.
-- Dirección IP de Red B -> 205.10.197.0/27
+- Dirección IP de Red B -> 205.10.201.0/27
 - Bloque de direcciones disponibles:
-  - 205.10.197.32/27
-  - 205.10.197.64/27
-  - 205.10.197.96/27
-  - 205.10.197.128/27
-  - 205.10.197.160/27
-  - 205.10.197.192/27
-  - 205.10.197.224/27
+  - 205.10.201.32/27
+  - 205.10.201.64/27
+  - 205.10.201.96/27
+  - 205.10.201.128/27
+  - 205.10.201.160/27
+  - 205.10.201.192/27
+  - 205.10.201.224/27
 
-Tenemos la red D que necesita 7 hosts. Para esto necesitamos 4 bits (14 hots). Usamos el bloque 205.10.197.32/27
-- Dirección IP -> 205.10.197.32 = 11001101 00001010 11000101 00100000
+Tenemos la red D que necesita 7 hosts. Para esto necesitamos 4 bits (14 hots). Usamos el bloque 205.10.201.32/27
+- Dirección IP -> 205.10.201.32 = 11001101 00001010 11001001 00100000
 - Mask -> 11111111 11111111 11111111 111|1|0000 = /28
 - Se usaron 4 bits para host y quedó 1 bit para subred. Vamos a asignar el 1er segmento de 14 hosts para la red D.
-- Dirección IP de red D -> 205.10.197.32/28
+- Dirección IP de red D -> 205.10.201.32/28
 - Bloque de direcciones disponibles:
-  - 205.10.197.48/28
+  - 205.10.201.48/28
 
 Por último, necesitamos una red punto a punto para los routers. Como solo son dos routers conectados, sabemos que son dos hosts, por lo tanto necesitamos 2 bits (2 hosts). Para esta red vamos a usar el bloque libre 205.10.197.48/29
-- Dirección IP -> 205.10.197.48 = 11001101 00001010 11000101 00110000
+
+- Dirección IP -> 205.10.201.48 = 11001101 00001010 11000101 00110000
 - Mask -> 11111111 11111111 11111111 1111|11|00 = /30
 - Se usaron 2 bits para host y quedaron 2 bits para subred. Vamos a asignar el 1er segmento de 2 hosts para la red punto a punto.
 - Dirección IP de red punto a punto -> 205.10.197.48/30
 - Bloque de direcciones disponibles:
-  - 205.10.197.52/30
-  - 205.10.197.56/30
-  - 205.10.197.60/30
+  - 205.10.201.52/30
+  - 205.10.201.56/30
+  - 205.10.201.60/30
 
 Resumen:
 
@@ -359,32 +351,32 @@ Resumen:
 
 Direcciones disponibles:
 
-- 205.10.200.0/22
-- 205.10.204.0/22
-- 205.10.208.0/22
-- 205.10.212.0/22
-- 205.10.216.0/22
-- 205.10.220.0/22
+// CONSULTAR
 
-- 205.10.198.0/24
-- 205.10.199.0/24
+- 205.10.208.0/21
+- 205.10.216.0/21
+- CIDR => 205.10.208.0/20
 
-- 205.10.197.64/27
-- 205.10.197.96/27
-- 205.10.197.128/27
-- 205.10.197.160/27
-- 205.10.197.192/27
-- 205.10.197.224/27
+- 205.10.202.0/24
+- 205.10.203.0/24
+- 205.10.204.0/24
+- 205.10.205.0/24
+- 205.10.206.0/24
+- 205.10.207.0/24
+- CIDR => 205.10.202.0/22
+
+- 205.10.201.64/27
+- 205.10.201.96/27
+- 205.10.201.128/27
+- 205.10.201.160/27
+- 205.10.201.192/27
+- 205.10.201.224/27
+- CIDR => 205.10.201.64/25
 
 - 205.10.197.52/30
 - 205.10.197.56/30
 - 205.10.197.60/30
-
-CIDR:
-- 205.10.200.0/19
-- 205.10.198.0/22
-- 204.10.197.64/24
-- 205.10.197.52/28
+- CIDR => 205.10.201.52/29
 
 ### d. Asigne direcciones IP a todas las interfaces de la topología que sea posible.
 
@@ -477,25 +469,66 @@ Resumen:
 
 ## 19. Describa qué es y para qué sirve el protocolo ICMP.
 
+- El protocolo ICMP es un protocolo helper de IP que sirve para brindar información de estado.
+
 ### a. Analice cómo funciona el comando ping.
+
+- El comando ping tiene un Echo Request y un Echo Reply. El emisor le envía un Echo Request al receptor y eventualmente el receptor le contestará con un Echo Reply (o con algún mensaje de error).
 
 #### i. Indique el tipo y código ICMP que usa el ping.
 
+- Tipo ICMP: 8 (Echo Request)
+- Código ICMP: 0
+
 #### ii. Indique el tipo y código ICMP que usa la respuesta de un ping.
+
+- Tipo ICMP: 0 (Echo Request)
+- Código ICMP: 0
 
 ### b. Analice cómo funcionan comandos como traceroute/tracert de Linux/Windows y cómo manipulan el campo TTL de los paquetes IP.
 
+- Tanto traceroute como tracert van incrementando el TTL por cada "iteración", el TTL empieza en 0 y se va incrementando por cada router hasta llegar al destino. De este modo se van mostrando los nodos por los que va pasando un paquete desde un origen a un destino.
+
 ### c. Indique la cantidad de saltos realizados desde su computadora hasta el sitio www.nasa.gov. Analice:
+
+- En total fueron 30 saltos.
 
 #### i. Cómo hacer para que no muestre el nombre del dominio asociado a la IP de cada salta.
 
+`traceroute -d www.nasa.gov`
+
 #### ii. La razón de la aparición de * en parte o toda la respuesta de un salto.
+
+- Los dispositivos que figuran como * es porque no responden a las solicitudes de traceroute. Algunas de las razones podrían ser: Filtrado por el firewall, reglas de enrutamiento, congestión de red, configuración de seguridad, etc.
 
 ### d. Verifique el recorrido hacia los servidores de nombre del dominio unlp.edu.ar. En base al recorrido realizado, ¿podría confirmar cuál de ellos toma un camino distinto?
 
+- Hacer en la facu.
+
 ## 20. ¿Para que se usa el bloque 127.0.0.0/8? ¿Qué PC responde a los siguientes comandos?
+
+- El bloque 127.0.0.0/8 está reservado para loopback, para la comunicación interna en un dispositivo. La dirección específica es 127.0.0.1
+
+### a. ping 127.0.0.1
+
+- 127.0.0.1
+
+### b. ping 127.0.54.43
+
+- 127.0.54.43
 
 ## 21. Investigue para qué sirven los comandos ifconfig y route. ¿Qué comandos podría utilizar en su reemplazo? Inicie una topología con CORE, cree una máquina y utilice en ella los comandos anteriores para practicar sus diferentes opciones, mínimamente:
 
-- Configurar y quitar una dirección IP en una interfaz.
-- Ver la tabla de ruteo de la máquina.
+- El comando `ifconfig` se usa para ver la configuración de interfaces de un dispositivo. Podemos ver, por ejemplo, las direcciones IP que el dispositivo tiene para cada interfaz. Se puede reemplazar con `ip`, que es un comando más completo y flexible.
+- El comando `route` se usa para ver la configuración de la tabla de ruteo de un dispositivo. Se puede reemplazar con `ip route` que ofrece funcionalidades más avanzadas.
+
+### Configurar y quitar una dirección IP en una interfaz.
+
+- Ver las interfaces -> `ifconfig`
+- Configurar una interfaz con una IP -> `ifconfig eth0 192.168.1.0 netmask 255.255.255.0`
+- Quitar una IP de una interfaz -> `ifconfig eth0 0.0.0.0`
+
+### Ver la tabla de ruteo de la máquina.
+
+- `route`
+- Verla sin nombres de dominio `route -d` o `route -n`
