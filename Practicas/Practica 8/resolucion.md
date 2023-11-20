@@ -391,6 +391,11 @@ La red RouterE-RouterD queda como 10.10.10.0/30, la cuál alberga 2 hosts. Nos q
 - 10.10.10.24/30 -> Libre
 - 10.10.10.28/30 -> Libre
 
+Correcciones:
+
+- Las redes asignadas a la red C y red D no son válidas porque son redes de multicast.
+- La red asignada a los routers RouterA-RouterB-RouterE está mal porque ya la asigné a las red A, más allá de que tengan diferente máscara (consultar).
+
 ## 14. Asigne IP a todas las interfaces de las redes listadas a continuación. Nota: Los routers deben tener asignadas las primeras IP de la red. Para enlaces entre routers, asignar en el siguiente orden: RouterA, RouterB, RouterC, RouterD y RouterE
 
 - Red A, Red B, Red C y Red D.
