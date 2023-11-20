@@ -7,3 +7,5 @@
 - [Practica 5 - Capa de Transporte (P1)](https://github.com/bautimercado/Redes-y-Comunicaciones-2023/blob/master/Practicas/Practica%205/resolucion.md)
 - [Practica 6 - Capa de Transporte (P2)](https://github.com/bautimercado/Redes-y-Comunicaciones-2023/blob/master/Practicas/Practica%206/resolucion.md)
 - [Practica 7 - Capa de Red (P1)](https://github.com/bautimercado/Redes-y-Comunicaciones-2023/blob/master/Practicas/Practica%207/resolucion.md)
+- [Practica 8 - Capa de Red (P2)](https://github.com/bautimercado/Redes-y-Comunicaciones-2023/blob/master/Practicas/Practica%208/resolucion.md)
+- [Practica 9 - Capa de Red (P3)](https://github.com/bautimercado/Redes-y-Comunicaciones-2023/blob/master/Practicas/Practica%209/resolucion.md)
