@@ -10,3 +10,4 @@
 - [Practica 8 - Capa de Red (P2)](https://github.com/bautimercado/Redes-y-Comunicaciones-2023/blob/master/Practicas/Practica%208/resolucion.md)
 - [Practica 9 - Capa de Red (P3)](https://github.com/bautimercado/Redes-y-Comunicaciones-2023/blob/master/Practicas/Practica%209/resolucion.md)
 - [Practica 10 - Capa de Enlace (P1)](https://github.com/bautimercado/Redes-y-Comunicaciones-2023/blob/master/Practicas/Practica%2010/resolucion.md)
+- [Practica 11 - Capa de Enlace (P2)](https://github.com/bautimercado/Redes-y-Comunicaciones-2023/blob/master/Practicas/Practica%2011/resolucion.md)
